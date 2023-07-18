@@ -1,0 +1,34 @@
+import requests
+
+def geolocate_ip(ip):
+    access_key = 'YOUR_IPSTACK_ACCESS_KEY'  # Replace with your IPstack access key
+    url = f'http://api.ipstack.com/{ip}?access_key={access_key}'
+
+    try:
+        response = requests.get(url)
+        data = response.json()
+
+        country = data['country_name']
+        city = data['city']
+        country_code = data['country_code']
+        continent = data['continent_name']
+
+        return country, city, country_code, continent
+
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
+
+
+ip_addresses = ['8.8.8.8', '216.58.207.46', '91.198.174.192']  # Replace with your list of IP addresses
+
+for ip in ip_addresses:
+    result = geolocate_ip(ip)
+    if result is not None:
+        country, city, country_code, continent = result
+        print(f"IP: {ip}")
+        print(f"Country: {country}")
+        print(f"City: {city}")
+        print(f"Country Code: {country_code}")
+        print(f"Continent: {continent}")
+        print("---------------------------")
